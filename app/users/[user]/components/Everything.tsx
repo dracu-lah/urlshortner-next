@@ -28,7 +28,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { LinkIcon, Settings2Icon } from "lucide-react";
+import { LinkIcon, Loader2Icon, Settings2Icon } from "lucide-react";
 import { useState } from "react";
 
 const formSchema = z.object({
@@ -101,7 +101,14 @@ const Everything = () => {
     });
   };
 
-  if (isPending) return "Loading...";
+  if (isPending)
+    return (
+      <div className="min-h-[80vh] justify-center flex items-center w-full">
+        <div>
+          <Loader2Icon className="animate-spin size-12 text-primary" />
+        </div>
+      </div>
+    );
 
   if (error) return "An error has occurred: " + error.message;
   return (
@@ -155,7 +162,7 @@ const Everything = () => {
                     />
                   )}
                 </div>
-                <div className="flex justify-end gap-2">
+                <div className="flex justify-center md:justify-end gap-2">
                   <Button
                     type="button"
                     onClick={() => setCustom((prev) => !prev)}

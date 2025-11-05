@@ -36,7 +36,7 @@ type URLType = {
   shortenedUrl: string;
   clicks: [];
 };
-const baseUrl = "http://localhost:4000";
+const baseUrl = process.env.BACKEND_API_URL as string;
 type FormType = z.infer<typeof formSchema>;
 const Everything = () => {
   const { data: session, isPending: isLoading } = authClient.useSession();

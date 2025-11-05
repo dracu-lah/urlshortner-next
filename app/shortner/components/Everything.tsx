@@ -54,6 +54,7 @@ const Everything = () => {
       fetch(`${baseUrl}/api/shortner?email=${session?.user.email}`).then(
         (res) => res.json(),
       ),
+    enabled: !isLoading,
   });
 
   useEffect(() => {

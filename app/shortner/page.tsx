@@ -1,12 +1,12 @@
 "use client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Everything from "./components/Everything";
+import Shortner from "./components/Shortner";
 
 const queryClient = new QueryClient();
 const UserPage = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Everything />
+      <Shortner />
     </QueryClientProvider>
   );
 };

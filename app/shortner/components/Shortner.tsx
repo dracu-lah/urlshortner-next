@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import {
   Table,
   TableBody,
@@ -26,6 +25,8 @@ import { LinkIcon, Loader2Icon, Settings2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { authClient } from "@/auth-client";
 import { useRouter } from "next/navigation";
+import api, { BASE_URL } from "@/config/axiosConfig";
+import endPoints from "@/services/endPoints";
 
 const formSchema = z.object({
   url: z.url(),
@@ -36,10 +37,8 @@ type URLType = {
   shortenedUrl: string;
   clicks: [];
 };
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL as string;
-console.log(baseUrl);
 type FormType = z.infer<typeof formSchema>;
-const Everything = () => {
+const Shortner = () => {
   const { data: session, isPending: isLoading } = authClient.useSession();
   const router = useRouter();
   const [custom, setCustom] = useState(false);
@@ -50,10 +49,16 @@ const Everything = () => {
     data: urls,
   } = useQuery({
     queryKey: ["urls"],
-    queryFn: () =>
-      fetch(`${baseUrl}/api/shortner?email=${session?.user.email}`).then(
-        (res) => res.json(),
-      ),
+    queryFn: async () => {
+      try {
+        const { data } = await api.get(endPoints.shortner, {
+          params: { email: session?.user.email },
+        });
+        return data;
+      } catch (error) {
+        throw error;
+      }
+    },
     enabled: !isLoading,
   });
 
@@ -66,7 +71,7 @@ const Everything = () => {
   const createMutation = useMutation({
     mutationFn: async (params: Record<any, any>) => {
       try {
-        const { data } = await axios.post(`${baseUrl}/api/shortner`, params);
+        const { data } = await api.post(endPoints.shortner, params);
         return data;
       } catch (error) {
         throw error;
@@ -82,7 +87,7 @@ const Everything = () => {
   const deleteMutation = useMutation({
     mutationFn: async ({ id }: { id: string }) => {
       try {
-        const { data } = await axios.delete(`${baseUrl}/api/shortner/${id}`);
+        const { data } = await api.delete(`${endPoints.shortner}/${id}`);
         return data;
       } catch (error) {
         throw error;
@@ -204,11 +209,11 @@ const Everything = () => {
                     <TableCell className="font-medium">{key + 1}</TableCell>
                     <TableCell>
                       <a
-                        href={`${baseUrl}/${url.shortenedUrl}`}
+                        href={`${BASE_URL}/${url.shortenedUrl}`}
                         target="_blank"
                         className="text-indigo-400"
                       >
-                        {baseUrl}/{url.shortenedUrl}
+                        {BASE_URL}/{url.shortenedUrl}
                       </a>
                     </TableCell>
                     <TableCell>{url.clicks.length}</TableCell>
@@ -232,4 +237,4 @@ const Everything = () => {
   );
 };
 
-export default Everything;
+export default Shortner;

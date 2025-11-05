@@ -1,10 +1,4 @@
-import {
-  QueryClient,
-  QueryClientProvider,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import {
   Table,
@@ -29,7 +23,9 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { LinkIcon, Loader2Icon, Settings2Icon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { authClient } from "@/auth-client";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   url: z.url(),
@@ -43,6 +39,8 @@ type URLType = {
 const baseUrl = "http://localhost:4000";
 type FormType = z.infer<typeof formSchema>;
 const Everything = () => {
+  const { data: session, isPending: isLoading } = authClient.useSession();
+  const router = useRouter();
   const [custom, setCustom] = useState(false);
   const queryClient = useQueryClient();
   const {
@@ -52,10 +50,16 @@ const Everything = () => {
   } = useQuery({
     queryKey: ["urls"],
     queryFn: () =>
-      fetch(`${baseUrl}/api/shortner?email=nevilkrishna@gmail.com`).then(
+      fetch(`${baseUrl}/api/shortner?email=${session?.user.email}`).then(
         (res) => res.json(),
       ),
   });
+
+  useEffect(() => {
+    if (!isLoading && !session) {
+      router.push("/");
+    }
+  }, [session, isLoading, router]);
 
   const createMutation = useMutation({
     mutationFn: async (params: Record<any, any>) => {
@@ -97,11 +101,11 @@ const Everything = () => {
   const onSubmit = (data: FormType) => {
     createMutation.mutate({
       ...data,
-      email: "nevilkrishna@gmail.com",
+      email: session?.user.email,
     });
   };
 
-  if (isPending)
+  if (isPending || isLoading)
     return (
       <div className="min-h-[80vh] justify-center flex items-center w-full">
         <div>
@@ -115,9 +119,12 @@ const Everything = () => {
     <div>
       <div className="px-4 md:px-8 py-4">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-2xl text-center md:text-left md:text-4xl font-semibold">
+          <h1 className="text-2xl pt-4 text-center md:text-left md:text-4xl font-semibold">
             Welcome back&nbsp;
-            <span className="text-primary font-semibold">Nevil</span>!
+            <span className="text-primary font-semibold">
+              {session?.user.name}
+            </span>
+            !
           </h1>
           <div className="mt-8 ">
             <Form {...form}>

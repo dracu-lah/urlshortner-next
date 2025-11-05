@@ -15,9 +15,34 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "URL Shortner",
+  icons: {
+    icon: "/favicon.ico",
+  },
   description: "Simple URL Shortner",
+  keywords: ["URL Shortner"],
+  openGraph: {
+    title: "URL Shortner",
+    description: "Simple URL Shortner",
+    url: "https://urlshortner-next.vercel.app",
+    siteName: "URL Shortner",
+    images: [
+      {
+        url: "https://urlshortner-next.vercel.app/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "og-image",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "URL Shortner",
+    description: "Simple URL Shortner",
+    images: ["https://urlshortner-next.vercel.app/og-image.png"],
+  },
 };
-
 export default async function RootLayout({
   children,
 }: Readonly<{

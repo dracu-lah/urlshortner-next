@@ -36,7 +36,10 @@ export function DeleteDialog({ id }: { id: string }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="bg-red-500 duration-300 hover:bg-red-600">
+        <Button
+          disabled={deleteMutation.isPending}
+          className="bg-red-500 duration-300 hover:bg-red-600"
+        >
           <TrashIcon className="text-slate-200" />
         </Button>
       </AlertDialogTrigger>

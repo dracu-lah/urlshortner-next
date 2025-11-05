@@ -51,6 +51,9 @@ const ShortnerForm = () => {
       queryClient.refetchQueries({ queryKey: ["urls"] });
       form.reset();
     },
+    onError: (error: any) => {
+      toast.error(error.response.data.message);
+    },
   });
   return (
     <div className="mt-8 ">

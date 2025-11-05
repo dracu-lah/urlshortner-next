@@ -36,7 +36,8 @@ type URLType = {
   shortenedUrl: string;
   clicks: [];
 };
-const baseUrl = process.env.BACKEND_API_URL as string;
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL as string;
+console.log(baseUrl);
 type FormType = z.infer<typeof formSchema>;
 const Everything = () => {
   const { data: session, isPending: isLoading } = authClient.useSession();

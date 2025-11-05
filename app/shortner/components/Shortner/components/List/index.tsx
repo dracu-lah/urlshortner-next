@@ -13,6 +13,7 @@ import endPoints from "@/services/endPoints";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2Icon } from "lucide-react";
 import { DeleteDialog } from "./components/DeleteDialog";
+import { toast } from "sonner";
 
 type URLType = {
   _id: string;
@@ -68,13 +69,16 @@ const List = () => {
             <TableRow key={url._id}>
               <TableCell className="font-medium">{key + 1}</TableCell>
               <TableCell>
-                <a
-                  href={`${BASE_URL}/${url.shortenedUrl}`}
-                  target="_blank"
+                <span
                   className="text-indigo-400"
+                  onClick={() => {
+                    navigator.clipboard
+                      .writeText(`${BASE_URL}/${url.shortenedUrl}`)
+                      .then(() => toast.info("Copied to clipboard!"));
+                  }}
                 >
                   {BASE_URL}/{url.shortenedUrl}
-                </a>
+                </span>
               </TableCell>
               <TableCell>{url.clicks.length}</TableCell>
               <TableCell className="text-right">

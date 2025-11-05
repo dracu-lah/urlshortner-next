@@ -49,6 +49,7 @@ const ShortnerForm = () => {
     onSuccess: () => {
       toast.success("Added");
       queryClient.refetchQueries({ queryKey: ["urls"] });
+      setCustom(false);
       form.reset();
     },
     onError: (error: any) => {

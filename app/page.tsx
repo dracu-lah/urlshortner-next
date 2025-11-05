@@ -13,13 +13,15 @@ export default function Home() {
     router.push("/shortner");
   };
   return (
-    <div className="flex text-center min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <div>
-        <h1 className="text-2xl md:text-4xl">Build ShortUrls Easily</h1>
-        <p className="text-sm opacity-80">
-          Random Description That Nobody Reads
-        </p>
-        <Button className="mt-4" onClick={() => signIn()}>
+    <div className="flex text-center px-2 min-h-screen items-start justify-center bg-zinc-50 font-sans dark:bg-black">
+      <div className="mt-20 md:mt-40">
+        <h1 className="text-3xl md:text-6xl lg:text-8xl font-bold  font-mono">
+          Build Short Urls <span className="text-primary">Easily</span>!
+        </h1>
+        <Button
+          className="mt-8 md:text-2xl md:py-8 md:px-10 font-semibold"
+          onClick={() => signIn()}
+        >
           Get Started
         </Button>
       </div>

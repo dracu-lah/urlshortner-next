@@ -18,12 +18,14 @@ const Shortner = () => {
   if (isLoading) {
     return (
       <div className="min-h-[80vh] justify-center flex items-center w-full">
-        <div>
-          <Loader2Icon className="animate-spin size-12 text-primary" />
-        </div>
+        <div>Checking Auth</div>
       </div>
     );
   }
+  if (!session) {
+    return null;
+  }
+
   return (
     <div>
       <div className="px-4 md:px-8 py-4">
